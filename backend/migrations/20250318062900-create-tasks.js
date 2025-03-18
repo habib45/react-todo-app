@@ -19,7 +19,7 @@ exports.up = function(db, callback) {
       id: { type: 'int', primaryKey: true, autoIncrement:true},
       name: { type: 'string', notNull:true },
       details: { type: 'string'},
-      estimate_time: { type: 'string'},
+      estimate_time: { type: 'decimal'},
       status: { type: 'string', defaultValue:'open'},
       created_at: { type: 'timestamp',defaultValue:'CURRENT_TIMESTAMP'},
   }, callback);
