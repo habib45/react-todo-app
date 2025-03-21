@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const path = require('path');
@@ -9,6 +10,16 @@ const userRoute = require('./routes/userRoute');
 const taskRouter = require('./routes/taskRoute');
 
 var app = express();
+
+app.use(cors());
+
+
+// OR allow only frontend origin
+app.use(cors({
+  origin:process.env.FRONTEND,
+  methods:process.env.ALLOW_METHODS,
+  credentials: true
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
