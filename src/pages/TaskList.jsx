@@ -1,34 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, {useContext } from 'react';
+import { TaskContext } from './TaskContext';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const TaskList = () => {
-  const [tasks, setTasks] = useState([]);
-  
-  const fetchTasks = async () => {
-    try {
-      const response = await axios.get('http://localhost:7000/api/v1/tasks');
-      setTasks(response.data);
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    }
+  const { tasks, updateTaskStatus } = useContext(TaskContext);
+
+  const handleStatusChange = (taskId, event) => {
+    const newStatus = event.target.value;
+    updateTaskStatus(taskId, newStatus); // 🔥 Update status in database
   };
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-  
-
-  return <div> 
-<div className="card-header">
-          {/* <div className="card-tools">
-            <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
-              <i className="fas fa-minus"></i>
-            </button>
-            <button type="button" className="btn btn-tool" data-card-widget="remove" title="Remove">
-              <i className="fas fa-times"></i>
-            </button>
-          </div> */}
-        </div>
+  return <div className='col-md-7 border border-light p-2'>
+    <h1>Task Management</h1>
+    <div className="card-header"> </div>
         <div className="card-body p-0">
           <table className="table table-striped projects">
               <thead>
@@ -47,26 +31,26 @@ const TaskList = () => {
                       <td>
                           <a><strong>{t.name}</strong></a>
                           <br/>
-                          <small>
-                          {t.details}
-                          </small>
+                          <small>{t.details}</small>
                       </td>
-                     
                       <td className="project_progress">
                           <div className="progress progress-sm">
                               <div className="progress-bar bg-green" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100">
                               </div>
                           </div>
-                          <small>
-                          {t.estimate_time} Hours
-                          </small>
+                          <small>{t.estimate_time} Hours</small>
                       </td>
                       <td className="project-state">
-                          <span className="badge text-black">{t.status}</span>
+                          <span className="badge text-black">{t.status}</span>    
                       </td>
                       <td className="project-actions text-right">
+                      <select value={t.status} onChange={(event) => handleStatusChange(t.id, event)} className=' me-1'>
+                            <option value="open">Open</option>
+                            <option value="in progress">In Progress</option>
+                            <option value="complete">Complete</option>
+                          </select> 
                           <a className="btn btn-info btn-sm me-1" href="#">
-                              <i className="fas fa-pencil-alt"></i>
+                             
                               Edit
                           </a>
                           <a className="btn btn-danger btn-sm" href="#">

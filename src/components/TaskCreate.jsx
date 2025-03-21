@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { toast } from "react-toastify";
+import React, { useState, useContext } from 'react';
+import { TaskContext } from '../pages/TaskContext';
 
-const SideBar = () => {
+const TaskCreate = () => {
+  const { addTask } = useContext(TaskContext);
     const [task, setTask] = useState({
         name: '',
         details: '',
@@ -11,28 +11,17 @@ const SideBar = () => {
       });
     
       const handleChange = (e) => {
-        console.log(e.target);
         const { name, value } = e.target;
         setTask({ ...task, [name]: value });
       };
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-        const response = await axios.post('http://localhost:7000/api/v1/tasks', task);
-        console.log('Data saved:', task);
-        console.log('Data saved:', response);
-        if (response.status === 201) {
-          toast.success("Task created successfully! 🎉");
-          setTask({ name: '', details: '', estimateTime: '', status: 'open' });
-        }
-        } catch (error) {
-        console.error('Error saving data:', error);
-        toast.error("Failed to create task! ❌");
-        }
+        await addTask(task); 
+        setTask({ name: '', details: '', estimateTime: '', status: 'open' });
     };
 
-    return <div>
+    return <div className='col-md-5 border border-light p-4'>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Task Name</label>
@@ -91,4 +80,4 @@ const SideBar = () => {
     </div>;
   };
   
-export default SideBar;
+export default TaskCreate;

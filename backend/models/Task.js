@@ -13,6 +13,17 @@ const Task = {
     db.query(query, values, callback);
   },
 
+  updateTaskStatus: (taskData, callback) => {
+    const query = "UPDATE tasks SET status = ? WHERE id = ?";
+    const values = [taskData.status, taskData.taskId];
+    db.query(query, values, callback);
+  },
+
+  getTaskCountByStatus: (callback) => {  
+    const query = 'SELECT status, COUNT(*) as count FROM tasks GROUP BY status';
+    db.query(query, callback);
+  },
+
 };
 
 module.exports = Task;

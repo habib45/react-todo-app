@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 // import React, { useState } from "react";
 import TopBar from "./components/Topbar";
-import SideBar from "./components/Sidebar";
+import TaskCreate from "./components/TaskCreate";
 import StatusBar from "./components/StatusBar";
-import TaskListPage from "./pages/TaskList";
+import TaskList from "./pages/TaskList";
+import TaskProvider from "./pages/TaskContext";
 
 import 'bootstrap/dist/css/bootstrap.css';
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -19,14 +19,10 @@ const PageLayout = () => {
       <div className='row p-5'>
       <StatusBar/>
       <div className='container d-flex'>
-      
-        <div className='col-md-7 border border-light p-2'>
-          <TaskListPage/>
-        </div>
-        <div className='col-md-5 border border-light p-4'>
-        {/* {showForm && <SideBar />} */}
-          <SideBar/>
-        </div>
+      <TaskProvider>
+        <TaskList />
+        <TaskCreate/>
+      </TaskProvider>
       </div>
       </div>
     </div>

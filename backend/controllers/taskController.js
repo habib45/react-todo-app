@@ -26,4 +26,32 @@ const createTask = (req, res) => {
   });
 };
 
-module.exports = { getTasks, createTask};
+const updateTaskStatus = (req, res) => {
+  const { taskId } = req.params;
+  const { status } = req.body;
+  const taskData = { status, taskId }; 
+
+  if (!status) {
+    return res.status(400).json({ error: "Status is required" });
+  }
+
+  Task.updateTaskStatus(taskData, (err, result) => {
+    if (err) {
+      console.error("Error updating task status:", err);
+      return res.status(500).send("Server error");
+    }
+    res.json({ message: "Task status updated successfully" });
+  });
+};
+
+const getTaskCountByStatus = (req, res) => {
+  Task.getTaskCountByStatus((err, results) => {
+    if (err) {
+      console.error("Error fetching task counts:", err);
+      return res.status(500).send("Server error");
+    }
+    res.json(results);
+  });
+};
+
+module.exports = { getTasks, createTask, updateTaskStatus, getTaskCountByStatus};
