@@ -3,9 +3,18 @@ const table = 'tasks';
 const validateTask = require('../validators/taskValidation');
 
 const Task = {
-  getAllTasks: (callback) => {
-    const query = "SELECT * FROM ??";
-    db.query(query, [table], callback);
+  getAllTasks: (search, callback) => {
+    // const query = "SELECT * FROM tasks where status=?";
+    // db.query(query, search, callback);
+    let query = "SELECT * FROM tasks";
+    let values = [];
+
+    if (search) {
+      query += " WHERE status = ?";
+      values.push(search);
+    }
+
+    db.query(query, values, callback);
   },
   createTask: (taskData, callback) => {
     const query = 'INSERT INTO tasks (name, details, estimate_time, status) VALUES (?, ?, ?, ?)';
@@ -19,7 +28,7 @@ const Task = {
     db.query(query, values, callback);
   },
 
-  getTaskCountByStatus: (callback) => {  
+  getTaskCountByStatus: (callback) => {
     const query = 'SELECT status, COUNT(*) as count FROM tasks GROUP BY status';
     db.query(query, callback);
   },

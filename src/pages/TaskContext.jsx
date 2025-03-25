@@ -1,22 +1,28 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from "react-toastify";
+import { useSearchParams } from 'react-router-dom';
+// import { toast } from "react-toastify";
 
 // Create Context
 // eslint-disable-next-line react-refresh/only-export-components
 export const TaskContext = createContext();
 
 const TaskProvider = ({ children }) => {
+  const [searchParams] = useSearchParams();
+  const status = searchParams.get("status") || "all"; 
   const [tasks, setTasks] = useState([]);
 
   // Fetch tasks from API when the component mounts
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    fetchTasks(status);
+  }, [status]);
 
-  const fetchTasks = async () => {
+  const fetchTasks = async (status) => {
     try {
-         const response = await axios.get('http://localhost:7000/api/v1/tasks');
+      const queryParam = status === "all" ? "" : status === "in-progress" ? "in progress" : status;
+
+      const response = await axios.get(`http://localhost:7000/api/v1/tasks?status=${queryParam}`);
          setTasks(response.data);
        } catch (error) {
          console.error('Error fetching tasks:', error);
@@ -30,7 +36,7 @@ const TaskProvider = ({ children }) => {
         const response = await axios.post('http://localhost:7000/api/v1/tasks', taskData);
         if (response.status === 201) {
           toast.success("Task created successfully! 🎉");
-          fetchTasks();
+          fetchTasks('all');
         }
         } catch (error) {
         console.error('Error saving data:', error);
@@ -41,7 +47,7 @@ const TaskProvider = ({ children }) => {
   const updateTaskStatus = async (taskId, newStatus) => {
     try {
       await axios.put(`http://localhost:7000/api/v1/tasks/${taskId}`, { status: newStatus });
-      fetchTasks(); // 🔥 Refresh task list after update
+      fetchTasks('all'); // 🔥 Refresh task list after update
     } catch (error) {
       console.error("Error updating task status:", error);
     }

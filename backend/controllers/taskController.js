@@ -1,7 +1,8 @@
 const Task = require('../models/Task');
 
 const getTasks = (req, res) => {
-    Task.getAllTasks((err, results) => {
+  const { status } = req.query; // Get 'status' from query params
+    Task.getAllTasks(status,(err, results) => {
     if (err) {
       console.error('Error fetching task:', err);
       res.status(500).send('Server error');

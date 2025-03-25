@@ -1,31 +1,32 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-// import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import TopBar from "./components/Topbar";
-import TaskCreate from "./components/TaskCreate";
-import StatusBar from "./components/StatusBar";
-import TaskList from "./pages/TaskList";
-import TaskProvider from "./pages/TaskContext";
-
+import NotFound from "./pages/NotFound";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Tasks from "./pages/Tasks";
 import 'bootstrap/dist/css/bootstrap.css';
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const PageLayout = () => {
-  // const [showForm, setShowForm] = useState(true);
+
   return (
-    <div className='row bdColor'>
-      <ToastContainer position="top-right" autoClose={3000} />
-      <TopBar/>
-      <div className='row p-5'>
-      <StatusBar/>
-      <div className='container d-flex'>
-      <TaskProvider>
-        <TaskList />
-        <TaskCreate/>
-      </TaskProvider>
+    <>
+      <div className='bdColor'>
+        <TopBar />
+        <ToastContainer position="top-right" autoClose={3000} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/all" element={<Home />} />
+          <Route path="/open" element={<Home />} />
+          <Route path="/in-progress" element={<Home />} />
+          <Route path="/complete" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="*" element={<NotFound />} /> {/* Handle unknown routes */}
+        </Routes>
       </div>
-      </div>
-    </div>
+    </>
   );
 };
 export default PageLayout;

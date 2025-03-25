@@ -5,15 +5,17 @@ import { TaskContext } from './TaskContext';
 const TaskList = () => {
   const { tasks, updateTaskStatus } = useContext(TaskContext);
 
+
   const handleStatusChange = (taskId, event) => {
     const newStatus = event.target.value;
     updateTaskStatus(taskId, newStatus); // 🔥 Update status in database
   };
 
-  return <div className='col-md-7 border border-light p-2'>
+  return <div className='col-md-12 taskListTable border border-light p-2'>
     <h1>Task Management</h1>
     <div className="card-header"> </div>
         <div className="card-body p-0">
+            {/* <button onClick={changeClass}>CLick</button> */}
           <table className="table table-striped projects">
               <thead>
                   <tr>
