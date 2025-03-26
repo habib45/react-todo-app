@@ -12,6 +12,7 @@ const TaskProvider = ({ children }) => {
   const [searchParams] = useSearchParams();
   const status = searchParams.get("status") || "all"; 
   const [tasks, setTasks] = useState([]);
+  const [editingTask, setEditingTask] = useState(null);
 
   // Fetch tasks from API when the component mounts
   useEffect(() => {
@@ -44,17 +45,50 @@ const TaskProvider = ({ children }) => {
         }
   };
 
+  const updateTask = async (taskId, taskData) => {
+    try {
+      const response = await axios.put(`http://localhost:7000/api/v1/tasks/update/${taskId}`, taskData);
+      fetchTasks('all');
+      console.log(response.data.message);
+      if (response.status === 200) {
+        console.log(response);
+      toast.success(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
   const updateTaskStatus = async (taskId, newStatus) => {
     try {
-      await axios.put(`http://localhost:7000/api/v1/tasks/${taskId}`, { status: newStatus });
-      fetchTasks('all'); // 🔥 Refresh task list after update
+      const response = await axios.put(`http://localhost:7000/api/v1/tasks/${taskId}`, { status: newStatus });
+      toast.success(response.data.message);
+      fetchTasks('all'); 
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      const response = await axios.delete(`http://localhost:7000/api/v1/tasks/${taskId}`);
+      toast.success(response.message);
+      fetchTasks('all'); 
     } catch (error) {
       console.error("Error updating task status:", error);
     }
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, addTask , updateTaskStatus}}>
+    <TaskContext.Provider value={{
+       tasks,
+       addTask, 
+       updateTaskStatus, 
+       updateTask, 
+       editingTask, 
+       setEditingTask,
+       deleteTask
+       }}>
       {children}
     </TaskContext.Provider>
   );
