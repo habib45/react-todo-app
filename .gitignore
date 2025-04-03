@@ -24,3 +24,8 @@ api/node_modules
 *.njsproj
 *.sln
 *.sw?
+
+
+# Backend
+backend/database.json
+backend/db/connection.js

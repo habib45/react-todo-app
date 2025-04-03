@@ -3,7 +3,7 @@
         "driver": "mysql",
         "host": "localhost",
         "user": "root",
-        "password": "root",
+        "password": "bs23",
         "database": "todo"
     }
 }
