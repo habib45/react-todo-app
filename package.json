@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@tinymce/tinymce-react": "^6.1.0",
     "axios": "^1.8.3",
     "bootstrap": "^5.3.3",
+    "quill": "^2.0.3",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
